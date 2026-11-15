@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>UltraLauncher</title>
+<meta name="description" content="UltraLauncher for iPhone: your clock, weather, TV watchlist and shortcuts.">
+<meta name="theme-color" content="#1E1411">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ultra">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="font-link" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="wall" aria-hidden="true"></div>
+
+<main id="app">
+  <!-- HOME -->
+  <section id="tab-home" class="tab active" aria-label="Home">
+    <header class="top">
+      <p id="greeting" class="muted"></p>
+      <button class="icon-btn" id="open-settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+      </button>
+    </header>
+
+    <button id="clock" class="clock" aria-label="Clock"></button>
+    <p id="date" class="date"></p>
+    <p id="smartline" class="smartline" hidden></p>
+
+    <button id="weather" class="card weather" aria-label="Weather: open the full forecast">
+      <div class="weather-now">
+        <span id="w-icon" class="w-icon" aria-hidden="true"></span>
+        <div>
+          <div id="w-temp" class="w-temp">--°</div>
+          <div id="w-desc" class="muted small">Tap to show your weather</div>
+        </div>
+        <div id="w-hilo" class="muted small right"></div>
+      </div>
+      <div id="w-hours" class="w-hours"></div>
+    </button>
+
+    <div class="section-head"><h2>Shortcuts</h2><button class="link" data-goto="shortcuts">Edit</button></div>
+    <div id="home-shortcuts" class="grid"></div>
+
+    <div class="section-head"><h2>Up next on TV</h2><button class="link" data-goto="watch">See all</button></div>
+    <div id="home-watch" class="card list"></div>
+  </section>
+
+  <!-- WATCHLIST -->
+  <section id="tab-watch" class="tab" aria-label="TV watchlist">
+    <header class="top"><h1>Watchlist</h1></header>
+    <p class="muted">Saved here, it shows on the Watchlist page of UltraLauncher TV, and in UltraLauncher on your Android phone.</p>
+    <div id="watch-link" class="card pad" hidden>
+      <h3>Link your watchlist</h3>
+      <p class="muted small">Type the link code shown in UltraLauncher on your Android phone (TV → TV Watchlist) or on the TV's Watchlist page.</p>
+      <form id="code-form" class="row">
+        <label class="sr" for="code-input">Link code</label>
+        <input id="code-input" autocomplete="off" autocapitalize="characters" placeholder="ABCD-EFGH-JK" inputmode="text">
+        <button class="pill accent" type="submit">Link</button>
+      </form>
+    </div>
+    <form id="watch-form" class="card pad add" hidden>
+      <label class="sr" for="watch-input">Add a link or a title</label>
+      <input id="watch-input" autocomplete="off" placeholder="Paste a link or type a title">
+      <button class="pill accent" type="submit">Add</button>
+    </form>
+    <p id="watch-status" class="muted small" role="status"></p>
+    <div id="watch-list" class="list-plain"></div>
+  </section>
+
+  <!-- SHORTCUTS -->
+  <section id="tab-shortcuts" class="tab" aria-label="Shortcuts">
+    <header class="top"><h1>Shortcuts</h1><button class="pill" id="edit-shortcuts">Edit</button></header>
+    <p class="muted">Tap to open. In Edit, tap × to remove one, or add apps, links and Siri Shortcuts below.</p>
+    <div id="all-shortcuts" class="grid"></div>
+    <div id="add-shortcuts" class="card pad" hidden>
+      <h3>Add a shortcut</h3>
+      <div id="presets" class="chips"></div>
+      <form id="custom-form" class="stack">
+        <label class="small muted" for="sc-name">Name</label>
+        <input id="sc-name" placeholder="e.g. Morning playlist" autocomplete="off">
+        <label class="small muted" for="sc-url">Link, or a Siri Shortcut name</label>
+        <input id="sc-url" placeholder="https://…  or  shortcut: Movie Night" autocomplete="off" autocapitalize="off">
+        <button class="pill accent" type="submit">Add shortcut</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="Sections">
+  <button data-tab="home" class="active" aria-label="Home">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><span>Home</span>
+  </button>
+  <button data-tab="watch" aria-label="Watchlist">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/></svg><span>Watchlist</span>
+  </button>
+  <button data-tab="shortcuts" aria-label="Shortcuts">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="14" y="4" width="6" height="6" rx="2"/><rect x="4" y="14" width="6" height="6" rx="2"/><rect x="14" y="14" width="6" height="6" rx="2"/></svg><span>Shortcuts</span>
+  </button>
+</nav>
+
+<!-- SETTINGS -->
+<dialog id="settings" aria-label="Settings">
+  <form method="dialog" class="sheet">
+    <div class="sheet-head"><h2>Settings</h2><button class="pill" value="close">Done</button></div>
+
+    <label class="small muted" for="set-name">Your name</label>
+    <input id="set-name" autocomplete="given-name" placeholder="Name for the greeting">
+
+    <p class="small muted">Clock style</p>
+    <div id="set-clock" class="chips"></div>
+
+    <p class="small muted">Font</p>
+    <div id="set-font" class="chips"></div>
+
+    <p class="small muted">Accent colour</p>
+    <div id="set-accent" class="swatches"></div>
+
+    <p class="small muted">Wallpaper</p>
+    <div class="row">
+      <label class="pill accent file">Choose photo<input id="set-wall" type="file" accept="image/*"></label>
+      <button class="pill" type="button" id="clear-wall">Plain</button>
+    </div>
+    <label class="small muted" for="set-dim">How dark over the photo</label>
+    <input id="set-dim" type="range" min="0" max="80" step="5">
+
+    <p class="small muted">Weather place</p>
+    <div class="row">
+      <button class="pill" type="button" id="use-location">Use my location</button>
+      <input id="set-city" placeholder="or type a town" autocomplete="off">
+    </div>
+    <p id="place-status" class="small muted" role="status"></p>
+
+    <p class="small muted">TV watchlist link code</p>
+    <div class="row">
+      <input id="set-code" autocapitalize="characters" autocomplete="off" placeholder="ABCD-EFGH-JK">
+      <button class="pill" type="button" id="save-code">Save</button>
+    </div>
+
+    <button type="button" id="version" class="version">UltraLauncher for iPhone · web 1.0</button>
+  </form>
+</dialog>
+
+<dialog id="credits" aria-label="Credits">
+  <form method="dialog" class="sheet center">
+    <p class="spark" aria-hidden="true">✦</p>
+    <h2>You found it</h2>
+    <p>UltraLauncher was built by Anto and Claude, one idea and one test at a time.</p>
+    <p class="muted small">London · November 2026</p>
+    <button class="pill accent" value="close">Nice</button>
+  </form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
